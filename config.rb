@@ -19,6 +19,10 @@ activate :external_pipeline,
   source: ".tmp/dist",
   latency: 1
 
+set :css_dir, "stylesheets"
+set :js_dir, "javascripts"
+set :images_dir, "images"
+
 # With alternative layout
 # page '/path/to/file.html', layout: 'other_layout'
 
