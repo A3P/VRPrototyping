@@ -1,2 +1,9 @@
-# threejs
-cutting edge stuff
+### Getting Started
+
+
+```
+npm install
+bundle exec middleman server
+```
+
+
