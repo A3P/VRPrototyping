@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "cutting edge stuff",
   "main": "webpack.config.js",
+  "scripts": {
+    "start": "$(npm root)/.bin/webpack --watch -d --progress --color",
+    "build": "$(npm root)/.bin/webpack --bail -p"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/A3P/threejs.git"
