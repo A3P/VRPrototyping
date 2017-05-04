@@ -1,0 +1,16 @@
+{
+  "name": "threejs",
+  "version": "1.0.0",
+  "description": "cutting edge stuff",
+  "main": "webpack.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/A3P/threejs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/A3P/threejs/issues"
+  },
+  "homepage": "https://github.com/A3P/threejs#readme"
+}
