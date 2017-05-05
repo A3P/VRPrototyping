@@ -16,12 +16,9 @@ page '/*.txt', layout: false
 activate :external_pipeline,
   name: :webpack,
   command: build? ? "npm run build" : "npm start",
-  source: ".tmp/dist",
+  source: "build",
   latency: 1
 
-set :css_dir, "stylesheets"
-set :js_dir, "javascripts"
-set :images_dir, "images"
 
 # With alternative layout
 # page '/path/to/file.html', layout: 'other_layout'
