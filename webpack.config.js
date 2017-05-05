@@ -1,68 +1,62 @@
-require('es6-promise').polyfill(); // fixes https://github.com/webpack/css-loader/issues/145
-
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+"use strict";
+const path = require("path");
+const webpack = require("webpack");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 var Clean = require('clean-webpack-plugin');
 
-var siteConfig = {
+const cssLoaders = [
+  {
+    loader: "css-loader",
+    options: {
+      modules: true,
+      minimize: true
+    }
+  },
+  {
+    loader: "sass-loader"
+  }
+]
+module.exports = {
+  context: __dirname + "/source",
   entry: {
-    site: [
-      './source/stylesheets/site.css.scss',
-      './source/javascripts/site.js'
+      site: [
+      './stylesheets/site.scss',
+      './javascripts/site.js'
     ],
   },
-
-  resolve: {
-    root: __dirname + '/source/javascripts',
-  },
-
-  output: {
-    path: __dirname + '/.tmp/dist',
-    filename: 'javascripts/[name].bundle.js',
-  },
-
   module: {
-    loaders: [
-      // Load JS
+    rules: [
       {
-        test: /source\/javascripts\/.*\.js$/,
-        exclude: /node_modules|\.tmp|vendor/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['es2015', 'stage-0']
-        },
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        loader: "babel-loader",
       },
-      // Load SCSS
       {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract(
-          "style",
-          "css!sass?sourceMap"
-        )
+        test: /\.(sass|scss)$/,
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: "css-loader"
+        })
       },
-
-      // Embed small pngs as data uri
-      // url-loader falls back to file-loader when image is too big
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loader: "url-loader?limit=100000&name=../images/[name].[ext]"
-      },
-    ],
+    ],//end rules
   },
-
-  sassLoader: {
-    includePaths: [require('bourbon').includePaths]
-  },
-
-  node: {
-    console: true
+  output: {
+    path: __dirname + "/build/",
+    filename: "[name].bundle.js",
   },
 
   plugins: [
-    new Clean(['.tmp']),
-    new ExtractTextPlugin("stylesheets/site.bundle.css"),
-    new webpack.optimize.CommonsChunkPlugin("site", "javascripts/site.bundle.js"),
+    new Clean(['.build']),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false
+    }),
+    new ExtractTextPlugin({
+      filename:  (getPath) => {
+        return getPath("[name].bundle.css").replace("css/js", "css");
+      },
+      disable: false,
+      allChunks: true,
+    }),
   ],
 };
-
-module.exports = siteConfig;
