@@ -6,4 +6,9 @@ module.exports = {
     "rules": {
         "eol-last": 0
     },
+    "globals": {
+        "window": true,
+        "document": true,
+        "requestAnimationFrame": true,
+    },
 };
