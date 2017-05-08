@@ -5,7 +5,8 @@
   "main": "webpack.config.js",
   "scripts": {
     "start": "$(npm root)/.bin/webpack --watch -d --progress --color",
-    "build": "$(npm root)/.bin/webpack --bail -p"
+    "build": "$(npm root)/.bin/webpack --bail -p",
+    "test": "mocha 'test/**/test-*.js' --colors"
   },
   "repository": {
     "type": "git",
