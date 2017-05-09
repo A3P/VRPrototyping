@@ -4,7 +4,10 @@ module.exports = {
         "import"
     ],
     "rules": {
-        "eol-last": 0
+        "eol-last": 0,
+        "comma-dangle": 0,
+        "arrow-parens": 0,
+        "no-param-reassign": 0
     },
     "globals": {
         "window": true,
