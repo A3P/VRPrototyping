@@ -10,5 +10,6 @@ module.exports = {
         "window": true,
         "document": true,
         "requestAnimationFrame": true,
+        "navigator": true,
     },
 };
