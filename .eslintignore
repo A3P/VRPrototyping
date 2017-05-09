@@ -1,1 +1,4 @@
 # Files added below will be ignored by the linter
+
+source/javascripts/VRControls.js
+source/javascripts/VREffect.js
