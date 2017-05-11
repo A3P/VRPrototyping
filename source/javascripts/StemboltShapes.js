@@ -19,3 +19,32 @@ export const createStemboltPart = (referencePointX, referencePointY, shift, angl
 
   return mesh;
 }
+
+
+
+// TODO add parameters for shifting around scene
+export const createStemboltLogo = (group) => {
+
+  const part1 = createStemboltPart(0, 3, .01, 1);
+  group.add( part1 );
+
+
+  const part2 = createStemboltPart(0, -2.8, 5, 1);
+  group.add( part2 );
+
+  const part3 = createStemboltPart(0, -8.6, .01, 1);
+  group.add( part3 );
+
+
+  const part4 = createStemboltPart(3, -5, 5, .83);
+  group.add( part4 );
+
+
+  const part5 = createStemboltPart(3, -10, .01, .83);
+  group.add( part5 );
+
+  const part6 = createStemboltPart(-7, -11, 5, .83);
+  group.add( part6 );
+
+
+};
