@@ -5,6 +5,8 @@ import * as webvrui from 'webvr-ui';
 import './VRControls';
 import './VREffect';
 
+import { createStemboltLogo } from './StemboltShapes';
+
 const renderer = new THREE.WebGLRenderer();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
 const controls = new THREE.VRControls(camera);
@@ -56,18 +58,17 @@ document.body.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
 
 
+const group = new THREE.Group();
+scene.add( group )
+
 // Create VR Effect rendering in stereoscopic mode
 const effect = new THREE.VREffect(renderer);
 effect.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.floor(window.devicePixelRatio));
 
 // Create 3D objects in scene.
-const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material = new THREE.MeshNormalMaterial();
-const cube = new THREE.Mesh(geometry, material);
-cube.position.set(0, controls.userHeight, -0.8);
-scene.add(cube);
-
+createStemboltLogo(group);
+group.position.z = -50
 
 const onResize = () => {
   effect.setSize(window.innerWidth, window.innerHeight);
@@ -88,7 +89,7 @@ const animate = (timestamp) => {
   const delta = Math.min(timestamp - lastRender, 500);
   lastRender = timestamp;
   // Apply rotation to cube mesh
-  cube.rotation.y += delta * 0.0003;
+  group.rotation.y += delta * 0.0003;
   if(enterVR.isPresenting()){
     controls.update();
     renderer.render(scene,camera);
