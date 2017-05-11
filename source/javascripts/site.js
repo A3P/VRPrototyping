@@ -56,7 +56,9 @@ document.getElementById('noVr').addEventListener('click', () => enterVR.requestE
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-
+const light = new THREE.DirectionalLight( 0xffffff );
+light.position.set( 0, 1, 1 ).normalize();
+scene.add(light);
 
 const group = new THREE.Group();
 scene.add( group )
