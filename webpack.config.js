@@ -3,6 +3,8 @@ const path = require("path");
 const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 var Clean = require('clean-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
 
 const cssLoaders = [
   {
@@ -63,5 +65,8 @@ module.exports = {
       disable: false,
       allChunks: true,
     }),
+    new CopyWebpackPlugin([
+      { from: './blenderFiles', to: 'blenderFiles' },
+      ]),
   ],
 };
