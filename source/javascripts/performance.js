@@ -6,9 +6,8 @@
 
   Add this to your file to run:
 
-  import performanceTest from './performance';
-
-  performanceTest(object);
+  const performanceTest = new PerformanceTest();
+  performanceTest.render();
 
 */
 
@@ -17,31 +16,38 @@ import * as THREE from 'three';
 import Stats from 'stats-js';
 
 // Accepts a Mesh as an arguement.
-export default (object) => {
-  const stats = new Stats();
-  stats.setMode(1);
-  // Align top-left
-  stats.domElement.style.position = 'absolute';
-  stats.domElement.style.left = '0px';
-  stats.domElement.style.top = '0px';
-  document.body.appendChild( stats.domElement );
-  const fpsText = document.getElementById('fpsText');
+export default class PerformanceTest {
 
-  const objects = [];
-  const material = object.material;
-  const geometry = object.geometry;
+  constructor() {
+    this.stats = new Stats();
+    this.stats.setMode(1);
+    // Align top-left
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.left = '0px';
+    this.stats.domElement.style.top = '0px';
+    document.body.appendChild( this.stats.domElement );
+    this.fpsText = document.getElementById('fpsText');
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize( window.innerWidth, window.innerHeight );
-  document.body.appendChild( renderer.domElement );
+    this.objects = [];
 
-  // Camera distance can be adjusted to test with a further spread of objects
-  camera.position.z = 20;
+    this.object = new THREE.Mesh(
+      new THREE.BoxGeometry( 1, 1, 1 ), new THREE.MeshBasicMaterial({color: 0x00ff00 } )
+    );
+
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.PerspectiveCamera(
+      75, window.innerWidth/window.innerHeight, 0.1, 1000
+    );
+    this.renderer = new THREE.WebGLRenderer();
+    this.renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( this.renderer.domElement );
+
+    // Camera distance can be adjusted to test with a further spread of objects
+    this.camera.position.z = 20;
+  }
 
 
-  const getRandomColor = () => {
+  static getRandomColor() {
     const letters = '0123456789ABCDEF';
     let color = '0x';
     for (let i = 0; i < 6; i += 1 ) {
@@ -51,11 +57,17 @@ export default (object) => {
   }
 
 
+  setObject (object) {
+    this.object = object;
+  }
+
+
+
   // Add randomly positioned and colored objects
-  const addObject = () => {
+  addObject () {
     // A new copy of the material has to be created everytime for different color meshes
-    const objectCopy = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial().copy(material));
-    objectCopy.material.color.setHex(getRandomColor());
+    const objectCopy = new THREE.Mesh(this.object.geometry, new THREE.MeshBasicMaterial(this.object.material));
+    objectCopy.material.color.setHex(PerformanceTest.getRandomColor());
 
     // Translates object positions randomly
     // The spread value determines how far objects can be randomly spread
@@ -71,42 +83,38 @@ export default (object) => {
       Math.floor ( (Math.random() * (spread - 1)) - (spread / 2) )
     );
 
-    objects.push(objectCopy);
-    scene.add(objectCopy);
+    this.objects.push(objectCopy);
+    this.scene.add(objectCopy);
   }
 
 
-  const checkFPS = () => {
-    const fps = parseInt(fpsText.innerHTML, 10);
+  checkFPS () {
+    const fps = parseInt(this.fpsText.innerHTML, 10);
     if(fps > 40) {
-      addObject();
-      console.log(objects.length);
+      this.addObject();
+      console.log(this.objects.length);
     }
   }
 
-  let renderFunction = () => {
+  renderFunction () {
     // Rotates objects in space
-    for (let i = 0; i < objects.length; i += 1) {
-      objects[i].rotation.x += 0.1;
-      objects[i].rotation.y += 0.1;
-      objects[i].rotation.z += 0.1;
+    for (let i = 0; i < this.objects.length; i += 1) {
+      this.objects[i].rotation.x += 0.1;
+      this.objects[i].rotation.y += 0.1;
+      this.objects[i].rotation.z += 0.1;
     }
   }
 
-  const setRenderFunction = (customRenderFunction) => {
-    renderFunction = () => customRenderFunction;
+  setRenderFunction (customRenderFunction) {
+    this.renderFunction = () => customRenderFunction;
   }
 
-  const render = () => {
-    requestAnimationFrame( render );
-    stats.begin();
-    renderFunction();
-    renderer.render(scene, camera);
-    checkFPS();
-    stats.end();
-
-  };
-
-  addObject();
-  render();
-};
+  render () {
+    requestAnimationFrame( this.render.bind(this) );
+    this.stats.begin();
+    this.renderFunction();
+    this.renderer.render(this.scene, this.camera);
+    this.checkFPS();
+    this.stats.end();
+  }
+}
