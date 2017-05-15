@@ -84,18 +84,27 @@ export default (object) => {
     }
   }
 
-  const render = () => {
-    requestAnimationFrame( render );
-    stats.begin();
+  let renderFunction = () => {
     // Rotates objects in space
     for (let i = 0; i < objects.length; i += 1) {
       objects[i].rotation.x += 0.1;
       objects[i].rotation.y += 0.1;
       objects[i].rotation.z += 0.1;
     }
+  }
+
+  const setRenderFunction = (customRenderFunction) => {
+    renderFunction = () => customRenderFunction;
+  }
+
+  const render = () => {
+    requestAnimationFrame( render );
+    stats.begin();
+    renderFunction();
     renderer.render(scene, camera);
     checkFPS();
     stats.end();
+
   };
 
   addObject();
