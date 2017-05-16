@@ -14,5 +14,6 @@ module.exports = {
         "document": true,
         "requestAnimationFrame": true,
         "navigator": true,
+        "WebSocket": true,
     },
 };
