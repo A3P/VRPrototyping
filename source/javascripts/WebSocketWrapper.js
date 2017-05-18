@@ -19,6 +19,10 @@ class WebSocketWrapper {
     };
   }
 
+  setMessageHandler(func) {
+    this.socket.onmessage = func;
+  }
+
   disconnect() {
     console.log('Disconnecting...');
     this.socket.close();
