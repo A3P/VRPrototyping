@@ -4,8 +4,8 @@
   "description": "cutting edge stuff",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "$(npm root)/.bin/webpack --watch -d --progress --color",
-    "build": "$(npm root)/.bin/webpack --bail -p",
+    "start": "NODE_ENV=development webpack --watch -d --progress --color",
+    "build": "NODE_ENV=production webpack --bail -p",
     "test": "mocha 'test/**/test-*.js' --colors",
     "lint": "eslint --color source/javascripts/"
   },
