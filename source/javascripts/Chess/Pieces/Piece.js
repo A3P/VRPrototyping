@@ -24,4 +24,4 @@ class Piece {
 
 }
 
-export default Piece; 
+export default Piece;
