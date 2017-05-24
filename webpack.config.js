@@ -5,7 +5,6 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 var Clean = require('clean-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
-
 const cssLoaders = [
   {
     loader: "css-loader",
@@ -54,6 +53,9 @@ module.exports = {
   },
 
   plugins: [
+    new webpack.DefinePlugin({
+      CHESS_SOCKET_API_URL: process.env.NODE_ENV === 'production' ? "'ws://localhost:8080'" :  "'ws://localhost:1337'",
+    }),
     new Clean(['.build']),
     new webpack.LoaderOptionsPlugin({
       minimize: true,

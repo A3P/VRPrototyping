@@ -1,7 +1,8 @@
 import WebSocketWrapper from '../../WebSocketWrapper';
 
 class ChessAPI {
-  constructor(url = 'ws://localhost:8080') {
+
+  constructor(url = CHESS_SOCKET_API_URL) {
     this.ws = new WebSocketWrapper();
     this.ws.connect(url);
   }
@@ -9,7 +10,6 @@ class ChessAPI {
   setListenerForMessages(handler) {
     this.ws.setMessageHandler(handler);
   }
-
 }
 
 export default ChessAPI;

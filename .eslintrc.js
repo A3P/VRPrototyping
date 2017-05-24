@@ -18,5 +18,6 @@ module.exports = {
         "requestAnimationFrame": true,
         "navigator": true,
         "WebSocket": true,
+        "CHESS_SOCKET_API_URL": true,
     },
 };
