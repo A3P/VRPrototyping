@@ -10,6 +10,7 @@ module.exports = {
         "no-mixed-operators": "off",
         "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
         "indent": ["error", 2],
+        "no-plusplus": [2, { allowForLoopAfterthoughts: true }],
     },
     "globals": {
         "window": true,
