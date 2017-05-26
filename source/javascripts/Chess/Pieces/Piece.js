@@ -7,7 +7,7 @@ class Piece {
     return blendLoad(path);
   }
 
-  init(mesh, position, color = 'green') {
+  init(mesh, position = { x: 0, y: 0, z: 0 }, color = 'green') {
     this.mesh = mesh;
 
     this.mesh.position.set(position.x, position.y, position.z);
