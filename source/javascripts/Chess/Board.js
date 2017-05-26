@@ -25,7 +25,7 @@ class Board {
     this.mesh = new THREE.Group();
     this.blackSquare = new Square();
     // Board is created once the Json Loader loads the blend file.
-    return Square.initSquareMesh('javascripts/square.json').then((mesh) => {
+    return Square.initSquareMesh('blenderFiles/square.json').then((mesh) => {
       this.initBlackSquare(mesh);
       this.setBoundingBox();
       this.initWhiteSquare();
