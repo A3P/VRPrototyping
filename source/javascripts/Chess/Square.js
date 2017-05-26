@@ -1,4 +1,4 @@
-import blendLoad from './Blender';
+import blendLoad from './../Blender';
 
 class Square {
 
