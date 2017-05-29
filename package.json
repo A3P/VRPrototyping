@@ -6,8 +6,10 @@
   "scripts": {
     "start": "$(npm root)/.bin/webpack --watch -d --progress --color",
     "build": "$(npm root)/.bin/webpack --bail -p",
-    "test": "mocha 'test/**/test-*.js' --colors"
+    "test": "mocha 'test/**/test-*.js' --colors",
+    "lint": "eslint --color source/javascripts/"
   },
+  "pre-push": ["lint"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/A3P/threejs.git"
@@ -43,6 +45,7 @@
     "mocha": "^3.3.0",
     "node-libs-browser": "^1.1.1",
     "node-sass": "^3.13.0",
+    "pre-push": "^0.1.1",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "three": "^0.85.2",
