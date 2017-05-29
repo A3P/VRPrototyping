@@ -19,7 +19,7 @@ class Piece {
   }
 
   setPosition(position) {
-    this.mesh.setPosition(position.x, position.y, position.z);
+    this.mesh.position.set(position.x, position.y, position.z);
   }
 
 }
