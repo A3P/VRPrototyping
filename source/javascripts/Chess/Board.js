@@ -12,24 +12,24 @@ import Square from './Square';
 
   const board = new Board();
   board.initBoard().then( () => {
-    board.mesh.position.set(x, controls.userHeight, z);
-    scene.add(board.mesh);
-  }
+    board.getBoard().position.set(x, controls.userHeight, z);
+    scene.add(board.getBoard());
+  });
   ******************************
 */
 
 class Board {
 
   initBoard() {
-    this.rows = [[], [], [], [], [], [], [], []];
-    this.mesh = new THREE.Group();
+    this.squares = [[], [], [], [], [], [], [], []];
+    this.group = new THREE.Group();
     this.blackSquare = new Square();
-    // Board is created once the Json Loader loads the blend file.
+    // Board is created once the Json Loader loads the blend file
     return Square.initSquareMesh('blenderFiles/square.json').then((mesh) => {
       this.initBlackSquare(mesh);
       this.setBoundingBox();
       this.initWhiteSquare();
-      this.createBoard();
+      this.createSquareArray();
     });
   }
 
@@ -38,15 +38,17 @@ class Board {
     this.blackSquare.getMesh().material.color.setHex('0x000000');
   }
 
-  // White Square is created using the same geometry as Black Square to
-  // save us from having to use Json Loader more than once
+  /*
+    White Square is created using the same geometry as Black Square to
+    save us from having to use Json Loader more than once
+  */
   initWhiteSquare() {
     this.whiteSquare = new Square();
     this.whiteSquare.init(new THREE.Mesh(this.blackSquare.getMesh().geometry));
     this.whiteSquare.getMesh().material.color.setHex('0xFFFFFF');
   }
 
-  // Bounding Box determines the length of each axis in a Square.
+  // Bounding Box is used to determine the length of each axis in a Square
   setBoundingBox() {
     this.boundingBox = new THREE.Box3().setFromObject(this.blackSquare.getMesh());
     this.x = this.boundingBox.max.x - this.boundingBox.min.x;
@@ -54,31 +56,59 @@ class Board {
     this.z = this.boundingBox.max.z - this.boundingBox.min.z;
   }
 
-  // Adds the Squares on the chessboard to a 2-dimensional array.
-  createBoard() {
+  // Adds the Squares on the chessboard to a 2-dimensional array
+  createSquareArray() {
     const squaresPerLine = 8;
     for (let row = 0; row < squaresPerLine; row++) {
       for (let column = 0; column < squaresPerLine; column++) {
-        this.rows[row].push(
+        this.squares[row].push(
           this.cloneSquare(row, column)
         );
         this.positionSquare(row, column);
-        this.mesh.add(this.rows[row][column]);
+        this.group.add(this.squares[row][column]);
       }
     }
   }
 
-  // Alternates between cloning white and black squares for the board.
+  // Alternates between cloning white and black squares for the board
   cloneSquare(row, column) {
     if ((row + column) % 2 === 0) {
-      return this.whiteSquare.getMesh().clone();
+      return this.blackSquare.getMesh().clone();
     }
-    return this.blackSquare.getMesh().clone();
+    return this.whiteSquare.getMesh().clone();
   }
 
-  // Positions the square based on their location on the board.
+  // Positions the square based on their location on the board
   positionSquare(row, column) {
-    this.rows[row][column].position.set(this.x * row, 0, this.z * column);
+    this.squares[row][column].position.set(this.x * row, 0, this.z * column);
+  }
+
+  addPiece(piece) {
+    this.group.add(piece);
+  }
+
+  removePiece(piece) {
+    this.group.remove(piece);
+  }
+
+  getBoard() {
+    return this.group;
+  }
+
+  // Returns two dimensional array of squares
+  getSquares() {
+    return this.squares;
+  }
+
+  /*
+    Clears the pieces of the board by deleteing its
+    children down to 64
+  */
+  clearBoard() {
+    const numberOfSquares = 64;
+    for (let i = (this.group.children.length - 1); i > (numberOfSquares - 1); i--) {
+      this.removePiece(this.group.children[i]);
+    }
   }
 
 }
