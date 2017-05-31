@@ -7,7 +7,8 @@
     "start": "$(npm root)/.bin/webpack --watch -d --progress --color",
     "build": "$(npm root)/.bin/webpack --bail -p",
     "test": "mocha 'test/**/test-*.js' --colors",
-    "lint": "eslint --color source/javascripts/"
+    "lint": "eslint --color source/javascripts/",
+    "fix-lint": "eslint --fix --color source/javascripts/"
   },
   "pre-push": ["lint"],
   "repository": {
