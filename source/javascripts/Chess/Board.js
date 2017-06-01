@@ -80,7 +80,7 @@ class Board {
 
   // Positions the square based on their location on the board
   positionSquare(row, column) {
-    this.squares[row][column].position.set(this.x * row, 0, this.z * column);
+    this.squares[row][column].position.set(this.x * row, 0, -this.z * column);
   }
 
   addPiece(piece) {
