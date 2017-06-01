@@ -22,7 +22,7 @@ class Chess {
     const boardPromise = board.initBoard().then(() => ({ Board: board }));
     const chessPromises = [loadGenericPieces(), boardPromise];
     return Promise.all(chessPromises).then((chessArray) => {
-      chessArray[0].Board = chessArray[1];
+      chessArray[0].Board = chessArray[1].Board;
       return chessArray[0];
     });
   }
