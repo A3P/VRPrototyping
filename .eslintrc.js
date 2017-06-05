@@ -11,6 +11,9 @@ module.exports = {
         "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
         "indent": ["error", 2],
         "no-plusplus": [2, { allowForLoopAfterthoughts: true }],
+        "import/no-unresolved": 0,
+        "import/no-extraneous-dependencies": 0,
+        "import/extensions": 0,
     },
     "globals": {
         "window": true,
