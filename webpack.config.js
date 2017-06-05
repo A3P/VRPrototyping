@@ -51,6 +51,9 @@ module.exports = {
     path: __dirname + "/build/",
     filename: "[name].bundle.js",
   },
+  resolve: {
+    modules: [__dirname + "/source/javascripts/", "node_modules"],
+  },
 
   plugins: [
     new webpack.DefinePlugin({
