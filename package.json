@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "start": "NODE_ENV=development webpack --watch -d --progress --color",
-    "build": "NODE_ENV=production webpack --bail -p",
+    "build": "NODE_ENV=production webpack --bail",
     "test": "mocha 'test/**/test-*.js' --colors",
     "lint": "eslint --color source/javascripts/",
     "fix-lint": "eslint --fix --color source/javascripts/"
@@ -50,6 +50,8 @@
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "three": "^0.85.2",
+    "uglify-es": "git://github.com/mishoo/UglifyJS2.git#harmony",
+    "uglifyjs-webpack-plugin": "^0.4.3",
     "url-loader": "^0.5.7",
     "webpack": "^2.1.0-beta.8"
   },
