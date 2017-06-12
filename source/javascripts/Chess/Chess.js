@@ -19,10 +19,10 @@ class Chess {
    */
   initGenericBlender() {
     const board = new Board();
-    const boardPromise = board.initBoard().then(() => ({ Board: board }));
-    const chessPromises = [loadGenericPieces(), boardPromise];
+    board.initBoard();
+    const chessPromises = [loadGenericPieces()];
     return Promise.all(chessPromises).then((chessArray) => {
-      chessArray[0].Board = chessArray[1].Board;
+      chessArray[0].Board = board;
       return chessArray[0];
     });
   }
