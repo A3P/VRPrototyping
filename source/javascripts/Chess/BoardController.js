@@ -22,6 +22,17 @@ class BoardController {
   init(pieces, board) {
     this.pieces = pieces;
     this.board = board;
+
+    this.squareX = board.x / 8;
+    this.squareY = board.y;
+    this.squareZ = board.z / 8;
+
+    const distanceFromCentre = 3.5;
+    this.origin = new THREE.Vector3(
+      -distanceFromCentre * this.squareX,
+      this.squareY,
+      distanceFromCentre * this.squareZ
+    );
   }
 
   /*
@@ -53,17 +64,10 @@ class BoardController {
     }
   }
 
-  // Positions a clone of the chess piece before it is added to the board
   positionPiece(piece, row, column) {
-    /*
-      The exact same position as the square is used for the piece except
-      the y co-oridnate is raised by the height(y-value) of the board
-    */
-    const position = new THREE.Vector3().copy(
-      this.board.getSquares()[row][column].position
-    );
-    position.y += this.board.y;
-    piece.position.set(position.x, position.y, position.z);
+    piece.position.copy(this.origin);
+    piece.position.x += row * this.squareX;
+    piece.position.z += -column * this.squareZ;
   }
 
 }
