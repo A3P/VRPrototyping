@@ -1,16 +1,19 @@
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["initGenericBlender"] }] */
 import ChessAPI from './API/ChessAPI';
 import Board from './Board';
-import loadGenericPieces from './Pieces';
+import { loadGenericPieces, makeBlackAndWhitePieces } from './Pieces';
+import BoardController from './BoardController';
+import InitialPieceState from './InitialPieceState';
 
 class Chess {
-
   constructor(scene) {
     this.scene = scene;
     this.playerOne = null;
     this.playerTwo = null;
     this.api = new ChessAPI();
-    this.chessSet = null;
+    this.pieceSet = null;
+    this.board = null;
+    this.boardcontroller = new BoardController();
   }
 
   /**
@@ -32,16 +35,27 @@ class Chess {
    * based on the passed in chessSet object
    */
   init(chessSet) {
-    this.chessSet = chessSet;
+    this.pieceSet = makeBlackAndWhitePieces(chessSet);
 
+    this.board = chessSet.Board;
+    this.orientatePieceSet();
+    this.scene.add(this.board.getBoard());
     this.initializePlayers();
     this.initializeSet();
   }
 
+  orientatePieceSet() {
+    // These are magic numbers, essentially trialed to be positioned
+    // as best as possible until we have a VR controller with
+    // positional tracking
+    this.board.getBoard().position.set(0, -12, -44);
+    this.board.getBoard().rotateY(1.60);
+    this.board.getBoard().rotateZ(0.3);
+  }
+
   initializeSet() {
-    console.log('Set ', this.chessSet);
-    // TODO once board controller is ready we can
-    // serve the entire chessSet to it
+    this.boardcontroller.init(this.pieceSet, this.board);
+    this.boardcontroller.placePieces(InitialPieceState.board_state);
   }
 
   initializePlayers() {
@@ -56,8 +70,8 @@ class Chess {
   }
 
   messageHandler(msg) {
-    console.log(msg);
-    console.log(this.chessSet);
+    const data = JSON.parse(msg.data);
+    this.boardcontroller.placePieces(data.board_state);
   }
 }
 
