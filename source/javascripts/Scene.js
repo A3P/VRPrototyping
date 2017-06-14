@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Chess from './Chess/Chess';
 import WebVr from './WebVR/WebVR';
 
 const globalScene = new THREE.Scene();
@@ -14,6 +15,10 @@ webvr.setStanding();
 camera.position.y = webvr.getControls().userHeight;
 // WEBGL SCENE SETUP
 
+// Create VR Effect rendering in stereoscopic mode
+const effect = webvr.getEffect();
+effect.setSize(window.innerWidth, window.innerHeight);
+
 document.body.appendChild(renderer.domElement);
 
 const light = new THREE.DirectionalLight(0xffffff);
@@ -24,10 +29,27 @@ let animationDisplay;
 // Request animation frame loop function
 
 const animate = () => {
-  webvr.getControls().update();
-  renderer.render(globalScene, camera);
+  if (webvr.enterVR.isPresenting()) {
+    webvr.getControls().update();
+    renderer.render(globalScene, camera);
+    effect.render(globalScene, camera);
+  } else {
+    renderer.render(globalScene, camera);
+  }
   animationDisplay.requestAnimationFrame(animate);
 };
 
-animationDisplay = window;
-window.requestAnimationFrame(animate);
+const ChessGame = new Chess(globalScene);
+ChessGame.initGenericBlender().then((values) => {
+  ChessGame.init(values);
+  ChessGame.play();
+  // Get the HMD
+  webvr.enterVR.getVRDisplay().then((display) => {
+    animationDisplay = display;
+    display.requestAnimationFrame(animate);
+  }).catch(() => {
+    // If there is no display available, fallback to window
+    animationDisplay = window;
+    window.requestAnimationFrame(animate);
+  });
+});
