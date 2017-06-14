@@ -67,9 +67,9 @@ const makeBlackAndWhitePieces = (chessSet) => {
       chessSet.Rook.getMesh().clone()],
   };
 
+  const whiteIndex = 0;
+  const blackIndex = 1;
   Object.keys(pieceSet).forEach((el) => {
-    const whiteIndex = 0;
-    const blackIndex = 1;
     pieceSet[el][whiteIndex].material = pieceSet[el][whiteIndex].material.clone();
     pieceSet[el][blackIndex].material = pieceSet[el][blackIndex].material.clone();
     const tempWhite = new Piece();
@@ -80,6 +80,9 @@ const makeBlackAndWhitePieces = (chessSet) => {
     pieceSet[el][whiteIndex] = tempWhite;
     pieceSet[el][blackIndex] = tempBlack;
   });
+
+  // Workaround for rotating the white knight to face inward
+  pieceSet.Knight[whiteIndex].getMesh().rotation.y = 91;
 
   return pieceSet;
 };
