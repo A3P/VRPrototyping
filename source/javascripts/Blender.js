@@ -6,8 +6,12 @@ export default (jsonPath) =>
     let blendMesh = null;
 
     const loader = new THREE.JSONLoader();
-    loader.load(jsonPath, (geo) => {
-      blendMesh = new THREE.Mesh(geo);
+    loader.load(jsonPath, (geo, material) => {
+      if (material) {
+        blendMesh = new THREE.Mesh(geo, material[0]);
+      } else {
+        blendMesh = new THREE.Mesh(geo);
+      }
       resolve(blendMesh);
     }, () => { }, (error) => {
       reject(error);
