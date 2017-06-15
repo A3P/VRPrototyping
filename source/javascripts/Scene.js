@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Stats from 'stats-js';
 import Chess from './Chess/Chess';
 import WebVr from './WebVR/WebVR';
 
@@ -21,6 +22,17 @@ effect.setSize(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.domElement);
 
+const stats = new Stats();
+
+stats.domElement.style.position = 'absolute';
+stats.domElement.style.left = '0px';
+stats.domElement.style.top = '0px';
+
+// max 32 bit unsigned integer for going over full screen
+stats.domElement.style.zIndex = 2147483647;
+
+document.body.appendChild(stats.domElement);
+
 const light = new THREE.DirectionalLight(0xffffff);
 light.position.set(0, 1, 1).normalize();
 globalScene.add(light);
@@ -29,6 +41,7 @@ let animationDisplay;
 // Request animation frame loop function
 
 const animate = () => {
+  stats.begin();
   if (webvr.enterVR.isPresenting()) {
     webvr.getControls().update();
     renderer.render(globalScene, camera);
@@ -37,6 +50,7 @@ const animate = () => {
     renderer.render(globalScene, camera);
   }
   animationDisplay.requestAnimationFrame(animate);
+  stats.end();
 };
 
 const ChessGame = new Chess(globalScene);
