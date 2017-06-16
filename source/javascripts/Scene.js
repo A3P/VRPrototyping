@@ -9,11 +9,11 @@ const renderer = new THREE.WebGLRenderer();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
 
 const webvr = new WebVr(renderer, camera);
-webvr.init();
-webvr.injectButtonsToDom();
-webvr.setStanding();
-
-camera.position.y = webvr.getControls().userHeight;
+webvr.init().then(() => {
+  webvr.injectButtonsToDom();
+  webvr.setStanding();
+  camera.position.y = webvr.getControls().userHeight;
+});
 // WEBGL SCENE SETUP
 
 // Create VR Effect rendering in stereoscopic mode
