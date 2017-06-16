@@ -59,7 +59,7 @@ module.exports = {
 
   plugins: [
     new webpack.DefinePlugin({
-      CHESS_SOCKET_API_URL: process.env.NODE_ENV === 'production' ? "'ws://localhost:8080'" :  "'ws://localhost:1337'",
+      CHESS_SOCKET_API_URL: "'wss://utils.freerunningtech.com/'",
     }),
     new Clean(['.build']),
     new BabiliPlugin(),
