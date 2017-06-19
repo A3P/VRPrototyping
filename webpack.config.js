@@ -4,7 +4,7 @@ const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 var Clean = require('clean-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+var BabiliPlugin = require("babili-webpack-plugin");
 
 const cssLoaders = [
   {
@@ -30,6 +30,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
+
         exclude: /node_modules/,
         loader: 'eslint-loader',
         enforce: "pre",
@@ -61,7 +62,7 @@ module.exports = {
       CHESS_SOCKET_API_URL: process.env.NODE_ENV === 'production' ? "'ws://localhost:8080'" :  "'ws://localhost:1337'",
     }),
     new Clean(['.build']),
-    new UglifyJSPlugin(),
+    new BabiliPlugin(),
     new webpack.LoaderOptionsPlugin({
       debug: false
     }),
