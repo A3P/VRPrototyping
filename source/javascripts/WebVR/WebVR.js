@@ -4,6 +4,7 @@ import * as webvrui from 'webvr-ui';
 
 import './VRControls';
 import './VREffect';
+import './DaydreamController';
 
 // webvr config
 const options = {
@@ -17,10 +18,10 @@ export default class {
     this.camera = camera;
     this.renderer = renderer;
     this.enterVR = new webvrui.EnterVRButton(this.renderer.domElement, options);
-    this.controls = new THREE.VRControls(camera);
     this.effect = new THREE.VREffect(renderer);
   }
-  init() {
+
+  init(scene) {
     this.enterVR.on('enter', () => {
       // hook for entering VR
     });
@@ -39,6 +40,15 @@ export default class {
     this.enterVR.on('show', () => {
       document.getElementById('ui').style.display = 'inherit';
       document.getElementById('exit').style.display = 'none';
+    });
+
+    return this.enterVR.getVRDisplay().then(display => {
+      this.camera = new THREE.WebVRCamera(display, this.renderer);
+      const gamepad = new THREE.DaydreamController();
+      gamepad.position.set(0.25, -0.5, 0);
+      scene.add(gamepad);
+    }).catch(() => {
+      this.controls = new THREE.VRControls(this.camera);
     });
   }
 
