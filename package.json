@@ -4,7 +4,7 @@
   "description": "cutting edge stuff",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "NODE_ENV=development webpack --watch -d --progress --color",
+    "start": "NODE_ENV=development webpack --watch --debug --output-pathinfo --progress --color",
     "build": "NODE_ENV=production webpack --bail",
     "test": "mocha 'test/**/test-*.js' --colors",
     "lint": "eslint --color source/javascripts/",
