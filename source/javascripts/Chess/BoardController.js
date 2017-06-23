@@ -23,6 +23,8 @@ class BoardController {
     this.pieces = pieces;
     this.board = board;
 
+    this.boardPlacements = [[], [], [], [], [], [], [], []];
+
     this.squareX = board.x / 8;
     this.squareY = board.y;
     this.squareZ = board.z / 8;
@@ -62,6 +64,7 @@ class BoardController {
           this.calculatePosition(boardState[i].x, boardState[i].y)
         );
 
+        this.boardPlacements[boardState[i].x][boardState[i].y] = pieceClone;
         this.board.addPiece(pieceClone);
       }
     }
