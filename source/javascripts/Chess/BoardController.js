@@ -58,16 +58,20 @@ class BoardController {
         const piece = this.pieces[boardState[i].piece][boardState[i].owner];
         const pieceClone = piece.getMesh().clone();
 
-        this.positionPiece(pieceClone, boardState[i].x, boardState[i].y);
+        pieceClone.position.copy(
+          this.calculatePosition(boardState[i].x, boardState[i].y)
+        );
+
         this.board.addPiece(pieceClone);
       }
     }
   }
 
-  positionPiece(piece, row, column) {
-    piece.position.copy(this.origin);
-    piece.position.x += row * this.squareX;
-    piece.position.z += -column * this.squareZ;
+  calculatePosition(row, column) {
+    const position = new THREE.Vector3().copy(this.origin);
+    position.x += row * this.squareX;
+    position.z += -column * this.squareZ;
+    return position;
   }
 
 }
