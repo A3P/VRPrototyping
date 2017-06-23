@@ -27,6 +27,7 @@ globalScene.add(light);
 
 let animationDisplay;
 // Request animation frame loop function
+const ChessGame = new Chess(globalScene);
 
 const animate = () => {
   if (webvr.enterVR.isPresenting()) {
@@ -36,10 +37,10 @@ const animate = () => {
   } else {
     renderer.render(globalScene, camera);
   }
+  ChessGame.boardcontroller.animateMovement();
   animationDisplay.requestAnimationFrame(animate);
 };
 
-const ChessGame = new Chess(globalScene);
 ChessGame.initGenericBlender().then((values) => {
   ChessGame.init(values);
   ChessGame.play();
