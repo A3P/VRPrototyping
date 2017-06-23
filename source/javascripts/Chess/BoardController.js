@@ -24,6 +24,9 @@ class BoardController {
     this.board = board;
 
     this.boardPlacements = [[], [], [], [], [], [], [], []];
+    this.animationQueue = [];
+    this.animationProgress = 0.0;
+    this.animationSpeed = 0.04;
 
     this.squareX = board.x / 8;
     this.squareY = board.y;
@@ -75,6 +78,73 @@ class BoardController {
     position.x += row * this.squareX;
     position.z += -column * this.squareZ;
     return position;
+  }
+
+  /*
+    Format for moves:
+    ******************
+    const moves = [
+      [{source: [0, 1], destination: [0, 2]}],
+      [{source: [1, 1], destination: [1, 3]}],
+      [{source: [1, 0], destination: [2, 2]}],
+      [{source: [1, 7], destination: [2, 5]}],
+    ]
+  */
+  movePiece(moves) {
+    moves.forEach((move) => {
+      const animation = {};
+
+      animation.destination = this.calculatePosition(
+          move.destination[0],
+          move.destination[1]
+      );
+
+      animation.source = this.calculatePosition(
+        move.source[0],
+        move.source[1]
+      );
+
+      this.board.removePiece(
+        this.getPiece(move.destination)
+      );
+
+      this.boardPlacements[move.destination[0]][move.destination[1]] =
+        this.getPiece(move.source);
+
+      this.boardPlacements[move.source[0]][move.source[1]] = undefined;
+      animation.piece = this.getPiece(move.destination);
+      this.animationQueue.push(animation);
+    });
+  }
+
+  getPiece(coordinates) {
+    return this.boardPlacements[coordinates[0]][coordinates[1]];
+  }
+
+  animateMovement() {
+    if (this.animationQueue.length !== 0) {
+      const move = this.animationQueue[0];
+
+      if (this.animationProgress < 1.0) {
+        move.piece.position.lerpVectors(
+          move.source,
+          move.destination,
+          this.animationProgress
+        );
+        this.animationProgress += this.animationSpeed;
+      } else {
+        this.animationProgress = 0.0;
+        /*
+          Due to the floating point inaccuracy, the position
+          of the piece will be slightly off during its
+          path of animation (not visually noticable).
+          Once the animation is over the piece is positioned at
+          its exact coordinates for consistency.
+        */
+        move.piece.position.copy(move.destination);
+        this.animationQueue.shift();
+      }
+    }
   }
 
 }

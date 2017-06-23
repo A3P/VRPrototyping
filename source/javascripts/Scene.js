@@ -39,6 +39,7 @@ globalScene.add(light);
 
 let animationDisplay;
 // Request animation frame loop function
+const ChessGame = new Chess(globalScene);
 
 const animate = () => {
   stats.begin();
@@ -49,11 +50,11 @@ const animate = () => {
   } else {
     renderer.render(globalScene, camera);
   }
+  ChessGame.boardcontroller.animateMovement();
   animationDisplay.requestAnimationFrame(animate);
   stats.end();
 };
 
-const ChessGame = new Chess(globalScene);
 ChessGame.initGenericBlender().then((values) => {
   ChessGame.init(values);
   ChessGame.play();
