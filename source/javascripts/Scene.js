@@ -39,7 +39,6 @@ globalScene.add(light);
 
 let animationDisplay;
 // Request animation frame loop function
-const ChessGame = new Chess(globalScene);
 
 const animate = () => {
   stats.begin();
@@ -55,10 +54,33 @@ const animate = () => {
   stats.end();
 };
 
+const moves = [
+  [{source: [0, 1], destination: [0, 2]}],
+  [{source: [1, 1], destination: [1, 3]}],
+  [{source: [1, 0], destination: [2, 2]}],
+  [{source: [2, 2], destination: [0, 3]}],
+  [{source: [4, 6], destination: [4, 4]}],
+  [{source: [3, 7], destination: [7, 3]}],
+  [{source: [1, 7], destination: [2, 5]}],
+  [{source: [2, 5], destination: [3, 7]}],
+  [{source: [5, 7], destination: [1, 3]}],
+  [{source: [0, 2], destination: [1, 3]}],
+]
+
+const addMoveToQueue = () => {
+  ChessGame.boardcontroller.movePiece(moves[0]);
+  moves.shift();
+  if (moves.length != 0) {
+    window.setTimeout(addMoveToQueue, 1000);
+  }
+}
+
+const ChessGame = new Chess(globalScene);
 ChessGame.initGenericBlender().then((values) => {
   ChessGame.init(values);
-  ChessGame.play();
+  // ChessGame.play();
   // Get the HMD
+  window.setTimeout(addMoveToQueue, 1000);
   webvr.enterVR.getVRDisplay().then((display) => {
     animationDisplay = display;
     display.requestAnimationFrame(animate);
