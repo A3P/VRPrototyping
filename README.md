@@ -21,7 +21,7 @@ example: `/usr/share/blender/scripts/addons`
 
 #### Addon
 `Open Blender` -> `File` -> `User Preferences` -> `Addons`
-Searh `three` then click checkbox.
+Search `three` then click checkbox.
 
 #### Export
 `File` -> `Export` -> `Three.js`
