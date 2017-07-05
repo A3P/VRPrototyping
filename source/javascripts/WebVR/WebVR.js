@@ -23,6 +23,7 @@ export default class {
   init() {
     this.enterVR.on('enter', () => {
       // hook for entering VR
+      console.log('hit');
     });
     this.enterVR.on('exit', () => {
       // hook for exiting VR

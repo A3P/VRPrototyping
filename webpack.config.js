@@ -62,7 +62,9 @@ module.exports = {
       CHESS_SOCKET_API_URL: "'wss://utils.freerunningtech.com/'",
     }),
     new Clean(['.build']),
-    new BabiliPlugin(),
+    new BabiliPlugin({
+      "mangle": false,
+    }),
     new webpack.LoaderOptionsPlugin({
       debug: false
     }),

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import Stats from 'stats-js';
 import Chess from './Chess/Chess';
+import ChessAPI from './Chess/API/ChessAPI';
 import WebVr from './WebVR/WebVR';
 
 const globalScene = new THREE.Scene();
@@ -56,7 +57,6 @@ const animate = () => {
 const ChessGame = new Chess(globalScene);
 ChessGame.initGenericBlender().then((values) => {
   ChessGame.init(values);
-  ChessGame.play();
   // Get the HMD
   webvr.enterVR.getVRDisplay().then((display) => {
     animationDisplay = display;
@@ -66,4 +66,46 @@ ChessGame.initGenericBlender().then((values) => {
     animationDisplay = window;
     window.requestAnimationFrame(animate);
   });
+
+  webvr.enterVR.on('enter', () => {
+    // hook for entering VR
+    console.log('hit');
+    const g = document.getElementsByClassName('game-selected');
+    console.log('here is g', g);
+    if (g[0]) {
+      ChessGame.play(g[0].innerText);
+    } else {
+      ChessGame.initializeSet();
+    }
+  });
+});
+
+const dynamicEvent = (el) => {
+  if (el.srcElement.className.includes('game-selected')) {
+    el.srcElement.className = 'game-item';
+    el.srcElement.style.backgroundColor = '';
+    ChessGame.initializeSet();
+  } else {
+    el.srcElement.className += ' game-selected';
+    el.srcElement.style.backgroundColor = 'red';
+    ChessGame.play(el.srcElement.innerText);
+  }
+};
+
+ChessAPI.getCurrentGames().then(resp => {
+  const games = JSON.parse(resp);
+  console.log(games);
+  // games.push('first');
+  // games.push('second');
+  Object.keys(games).forEach((el) => {
+    console.log(`Game ${el}`, games[el]);
+    const ul = document.getElementById('gamesList');
+    const li = document.createElement('li');
+    li.className = 'game-item';
+    li.appendChild(document.createTextNode(games[el]));
+    ul.appendChild(li);
+    li.onclick = dynamicEvent; // Attach the event!
+  });
+}).catch(err => {
+  console.log('error', err);
 });
