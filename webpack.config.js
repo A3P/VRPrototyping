@@ -5,6 +5,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 var Clean = require('clean-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var BabiliPlugin = require("babili-webpack-plugin");
+var commitID = require('child_process').execSync("git rev-parse --short HEAD | tr -d '\n' ").toString();
 
 const cssLoaders = [
   {
@@ -60,6 +61,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       CHESS_SOCKET_API_URL: "'wss://utils.freerunningtech.com/'",
+      COMMIT_ID: JSON.stringify(commitID),
     }),
     new Clean(['.build']),
     new BabiliPlugin(),
