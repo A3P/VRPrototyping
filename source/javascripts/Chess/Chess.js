@@ -10,7 +10,7 @@ class Chess {
     this.scene = scene;
     this.playerOne = null;
     this.playerTwo = null;
-    this.api = new ChessAPI();
+    this.api = null;
     this.pieceSet = null;
     this.board = null;
     this.boardcontroller = new BoardController();
@@ -64,7 +64,9 @@ class Chess {
     // socket connection grab player meta
   }
 
-  play() {
+  play(gameID) {
+    console.log('playing!');
+    this.api = new ChessAPI(undefined, gameID);
     console.log('Playing!');
     this.api.setListenerForMessages(this.messageHandler.bind(this));
   }

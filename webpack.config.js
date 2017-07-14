@@ -64,7 +64,9 @@ module.exports = {
       COMMIT_ID: JSON.stringify(commitID),
     }),
     new Clean(['.build']),
-    new BabiliPlugin(),
+    new BabiliPlugin({
+      "mangle": false,
+    }),
     new webpack.LoaderOptionsPlugin({
       debug: false
     }),

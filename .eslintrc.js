@@ -22,5 +22,6 @@ module.exports = {
         "navigator": true,
         "WebSocket": true,
         "CHESS_SOCKET_API_URL": true,
+        "XMLHttpRequest": true,
     },
 };
