@@ -25,7 +25,7 @@ class Chess {
     board.initBoard();
     const chessPromises = [new Promise((resolve) => { resolve(); })];
     return Promise.all(chessPromises).then(() => {
-      const help = [{ Board: board}];
+      const help = [{ Board: board }];
       // chessArray[0].Board = board;
       return help[0];
     });
