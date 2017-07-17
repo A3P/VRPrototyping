@@ -23,8 +23,8 @@ class Chess {
   initGenericBlender() {
     const board = new Board();
     board.initBoard();
-    const chessPromises = [new Promise((resolve, reject) => { resolve(); })];
-    return Promise.all(chessPromises).then((chessArray) => {
+    const chessPromises = [new Promise((resolve) => { resolve(); })];
+    return Promise.all(chessPromises).then(() => {
       const help = [{ Board: board}];
       // chessArray[0].Board = board;
       return help[0];
