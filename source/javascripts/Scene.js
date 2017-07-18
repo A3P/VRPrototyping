@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import Stats from './Stats.js';
-import Chess from './Chess/Chess';
 import WebVr from './WebVR/WebVR';
 import { checkForStats, getUSID } from './SendStats';
+import StressTest from './StressTest';
 
 const globalScene = new THREE.Scene();
 
@@ -15,6 +15,7 @@ webvr.injectButtonsToDom();
 webvr.setStanding();
 
 camera.position.y = webvr.getControls().userHeight;
+camera.position.z = -100;
 // WEBGL SCENE SETUP
 
 // Create VR Effect rendering in stereoscopic mode
@@ -35,12 +36,13 @@ stats.domElement.style.zIndex = 2147483647;
 
 document.body.appendChild(stats.domElement);
 
+const stressTest = new StressTest(globalScene);
+
 const light = new THREE.DirectionalLight(0xffffff);
 light.position.set(0, 1, 1).normalize();
 globalScene.add(light);
 
 let animationDisplay;
-const ChessGame = new Chess(globalScene);
 
 const animate = () => {
   stats.begin();
@@ -51,21 +53,18 @@ const animate = () => {
   } else {
     renderer.render(globalScene, camera);
   }
-  ChessGame.boardcontroller.animateMovement();
   animationDisplay.requestAnimationFrame(animate);
-  checkForStats(stats.end(), renderer.info, usid);
+  const info = stats.end();
+  stressTest.checkFPS(info);
+  checkForStats(info, renderer.info, usid);
 };
 
-ChessGame.initGenericBlender().then((values) => {
-  ChessGame.init(values);
-  ChessGame.play();
-  // Get the HMD
-  webvr.enterVR.getVRDisplay().then((display) => {
-    animationDisplay = display;
-    display.requestAnimationFrame(animate);
-  }).catch(() => {
-    // If there is no display available, fallback to window
-    animationDisplay = window;
-    window.requestAnimationFrame(animate);
-  });
+// Get the HMD
+webvr.enterVR.getVRDisplay().then((display) => {
+  animationDisplay = display;
+  display.requestAnimationFrame(animate);
+}).catch(() => {
+  // If there is no display available, fallback to window
+  animationDisplay = window;
+  window.requestAnimationFrame(animate);
 });
