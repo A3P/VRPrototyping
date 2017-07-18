@@ -11,37 +11,18 @@
 */
 
 import * as THREE from 'three';
-import Stats from 'stats-js';
 
 // Accepts a Mesh as an arguement.
 export default class PerformanceTest {
 
-  constructor() {
-    this.stats = new Stats();
-    this.stats.setMode(1);
-    // Align top-left
-    this.stats.domElement.style.position = 'absolute';
-    this.stats.domElement.style.left = '0px';
-    this.stats.domElement.style.top = '0px';
-    document.body.appendChild(this.stats.domElement);
-    this.fpsText = document.getElementById('fpsText');
-
+  constructor(scene) {
     this.objects = [];
 
     this.object = new THREE.Mesh(
       new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ color: 0x00ff00 })
     );
 
-    this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(
-      75, window.innerWidth / window.innerHeight, 0.1, 1000
-    );
-    this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(this.renderer.domElement);
-
-    // Camera distance can be adjusted to test with a further spread of objects
-    this.camera.position.z = 20;
+    this.scene = scene;
   }
 
   static getRandomColor() {
@@ -66,7 +47,7 @@ export default class PerformanceTest {
 
     // Translates object positions randomly
     // The spread value determines how far objects can be randomly spread
-    const spread = 50;
+    const spread = 20;
 
     objectCopy.translateX(
       Math.floor((Math.random() * (spread - 1)) - (spread / 2))
@@ -82,12 +63,15 @@ export default class PerformanceTest {
     this.scene.add(objectCopy);
   }
 
-  checkFPS() {
-    const fps = parseInt(this.fpsText.innerHTML, 10);
-    if (fps > 40) {
+  checkFPS(stats) {
+    if (stats.fps) {
+      this.fps = stats.fps;
+    }
+    if (this.fps > 15) {
       this.addObject();
       console.log(this.objects.length);
     }
+    this.renderFunction();
   }
 
   renderFunction() {
@@ -104,11 +88,7 @@ export default class PerformanceTest {
   }
 
   render() {
-    requestAnimationFrame(this.render.bind(this));
-    this.stats.begin();
     this.renderFunction();
-    this.renderer.render(this.scene, this.camera);
     this.checkFPS();
-    this.stats.end();
   }
 }
