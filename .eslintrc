@@ -1,0 +1,42 @@
+---
+extends: eslint:recommended
+parserOptions:
+  sourceType: "module"
+  ecmaFeatures:
+    modules: true
+
+env:
+  es6: true
+  browser: true
+  node: true
+
+rules:
+  indent: [2, 2] # 2 spaces indentation
+  max-len: [2, 200, 4]
+  quotes: [2, "single"]
+  no-multiple-empty-lines: [2, {"max": 1}]
+
+  no-console: ["error", { allow: ["log", "warn", "error"] }]
+
+  brace-style: [0, "stroustrup"]
+  // comma-dangle: [2, "always-multiline"]
+  comma-style: [2, "last"]
+  computed-property-spacing: [2, "never"]
+  dot-location: [2, "property"]
+
+  one-var: [2, "never"]
+  #no-var: [2]
+  prefer-const: [2]
+  no-bitwise: [2]
+
+  object-curly-spacing: [2, "always"]
+  array-bracket-spacing: [2, "never"]
+  space-unary-ops: [2, {"words": true, "nonwords": false}]
+  keyword-spacing: [2, {"after": true}]
+  space-before-blocks: [2, "always"]
+  space-before-function-paren: [2, "never"]
+  space-in-parens: [2, "never"]
+  spaced-comment: [2, "always"]
+
+globals:
+  CHESS_SOCKET_API_URL: true

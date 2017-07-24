@@ -1,45 +1,38 @@
 "use strict";
 const path = require("path");
 const webpack = require("webpack");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-var Clean = require('clean-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var BabiliPlugin = require("babili-webpack-plugin");
-var commitID = require('child_process').execSync("git rev-parse --short HEAD | tr -d '\n' ").toString();
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const commitID = require('child_process').execSync("git rev-parse --short HEAD | tr -d '\n' ").toString();
 
-const cssLoaders = [
-  {
-    loader: "css-loader",
-    options: {
-      modules: true,
-      minimize: true
-    }
-  },
-  {
-    loader: "sass-loader"
-  }
-]
+const extractSass = new ExtractTextPlugin({
+    filename: "[name].[contenthash].css",
+    disable: process.env.NODE_ENV === "development"
+});
+
+
 module.exports = {
-  context: __dirname + "/source",
-  entry: {
-      site: [
-      './stylesheets/site.scss',
-      './javascripts/site.js'
-    ],
+  entry: "./source/entry.js",
+  output: {
+    path: __dirname + '/build',
+    filename: "bundle.js"
   },
   module: {
-    rules: [
+    loaders: [
       {
-        test: /\.js$/,
-
-        exclude: /node_modules/,
-        loader: 'eslint-loader',
         enforce: "pre",
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader",
       },
       {
         test: /\.js$/,
-        exclude: /(node_modules)/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
+        exclude: /(node_modules|bower_components)/,
+        query: {
+          presets: ['es2015']
+        }
       },
       {
         test: /\.(sass|scss)$/,
@@ -48,35 +41,20 @@ module.exports = {
           use: "css-loader"
         })
       },
-    ],//end rules
+    ]
   },
-  output: {
-    path: __dirname + "/build/",
-    filename: "[name].bundle.js",
-  },
-  resolve: {
-    modules: [__dirname + "/source/javascripts/", "node_modules"],
-  },
-
   plugins: [
+    extractSass,
     new webpack.DefinePlugin({
       CHESS_SOCKET_API_URL: "'wss://utils.freerunningtech.com/'",
       COMMIT_ID: JSON.stringify(commitID),
     }),
-    new Clean(['.build']),
-    new BabiliPlugin(),
-    new webpack.LoaderOptionsPlugin({
-      debug: false
-    }),
-    new ExtractTextPlugin({
-      filename:  (getPath) => {
-        return getPath("[name].bundle.css").replace("css/js", "css");
-      },
-      disable: false,
-      allChunks: true,
+    new HtmlWebpackPlugin({
+      title: 'VR Chess',
+      template: 'source/index.html'
     }),
     new CopyWebpackPlugin([
-      { from: './blenderFiles', to: 'blenderFiles' },
-      ]),
+      { from: './source/blenderFiles', to: 'blenderFiles' },
+    ])
   ],
 };
