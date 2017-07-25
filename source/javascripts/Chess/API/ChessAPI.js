@@ -14,6 +14,10 @@ class ChessAPI {
   disconnectSocket() {
     this.ws.disconnect();
   }
+
+  static getCurrentGames() {
+    return Request('GET', `${API_BASIS_URL}list_games`);
+  }
 }
 
 export default ChessAPI;
