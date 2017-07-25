@@ -3,7 +3,8 @@
 
 ```
 npm install
-bundle exec middleman server
+npm run start
+# App will be running at localhost:8080
 ```
 
 ### WebGL Support
