@@ -10,6 +10,10 @@ class ChessAPI {
   setListenerForMessages(handler) {
     this.ws.setMessageHandler(handler);
   }
+
+  disconnectSocket() {
+    this.ws.disconnect();
+  }
 }
 
 export default ChessAPI;
