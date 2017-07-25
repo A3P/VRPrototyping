@@ -18,6 +18,11 @@ module.exports = {
     path: __dirname + '/build',
     filename: "bundle.js"
   },
+  resolve: {
+    alias: {
+      Core: path.resolve(__dirname, 'source/javascripts/Core'),
+    }
+  },
   module: {
     loaders: [
       {
