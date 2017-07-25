@@ -1,4 +1,4 @@
-import WebSocketWrapper from '../../WebSocketWrapper';
+import WebSocketWrapper from 'Core/WebSocketWrapper';
 
 class ChessAPI {
 
