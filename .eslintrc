@@ -40,3 +40,5 @@ rules:
 
 globals:
   CHESS_SOCKET_API_URL: true
+  COMMIT_ID: true
+  API_BASIS_URL: true
