@@ -1,4 +1,5 @@
 import WebSocketWrapper from 'Core/WebSocketWrapper';
+import Request from 'Core/Requests';
 
 class ChessAPI {
 
@@ -15,7 +16,7 @@ class ChessAPI {
     this.ws.disconnect();
   }
 
-  static getCurrentGames() {
+  getCurrentGames() {
     return Request('GET', `${API_BASIS_URL}list_games`);
   }
 }

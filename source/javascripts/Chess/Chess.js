@@ -64,7 +64,10 @@ class Chess {
     // socket connection grab player meta
   }
 
-  play() {
+  play(gameID = null) {
+    if (gameID) {
+      this.api = new ChessAPI(`${CHESS_SOCKET_API_URL}${gameID}`);
+    }
     console.log('Playing!');
     this.api.setListenerForMessages(this.messageHandler.bind(this));
   }
