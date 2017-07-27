@@ -19,6 +19,10 @@ class ChessAPI {
   getCurrentGames() {
     return Request('GET', `${API_BASIS_URL}list_games`);
   }
+
+  createGame() {
+    return Request('POST', `${API_BASIS_URL}new_game`);
+  }
 }
 
 export default ChessAPI;
