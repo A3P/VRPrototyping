@@ -51,8 +51,8 @@ module.exports = {
   plugins: [
     extractSass,
     new webpack.DefinePlugin({
-      API_BASIS_URL: "'https://utils.freerunningtech.com/'",
-      CHESS_SOCKET_API_URL: "'wss://utils.freerunningtech.com/'",
+      API_BASIS_URL: "'https://gentle-thicket-16020.herokuapp.com/'",
+      CHESS_SOCKET_API_URL: "'wss://gentle-thicket-16020.herokuapp.com/'",
       COMMIT_ID: JSON.stringify(commitID),
     }),
     new HtmlWebpackPlugin({
