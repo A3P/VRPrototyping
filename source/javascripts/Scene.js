@@ -56,9 +56,36 @@ const animate = () => {
   checkForStats(stats.end(), renderer.info, usid);
 };
 
+const showGames = () => {
+  ChessGame.api.getCurrentGames()
+  .then(JSON.parse)
+  .then((resp) => {
+    let radiosInnerHtml = '';
+
+    for (let i = 0; i < resp.length; i++) {
+      const label = `<label><input class="games-radio" type="radio" name="games" value="${resp[i]}">${resp[i]}</label>`
+      radiosInnerHtml = radiosInnerHtml + label;
+    }
+
+    const gamesContainer = document.getElementById('games-container');
+    gamesContainer.innerHTML = radiosInnerHtml;
+
+    const radios = document.getElementsByClassName('games-radio');
+
+    for (let i = 0; i < radios.length; i++) {
+      radios[i].onclick = function() {
+        ChessGame.play(this.value);
+      };
+    }
+  }).catch((err) => {
+    console.log('error is', err);
+  });
+}
+
 ChessGame.initGenericBlender().then((values) => {
   ChessGame.init(values);
   ChessGame.play();
+  showGames();
   // Get the HMD
   webvr.enterVR.getVRDisplay().then((display) => {
     animationDisplay = display;
