@@ -4,7 +4,7 @@
   "description": "cutting edge stuff",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "webpack-dev-server --progress --colors --content-base build/",
+    "start": "webpack-dev-server --progress --colors --open --content-base build/",
     "build": "webpack --progress --colors",
     "test": "mocha 'test/**/test-*.js' --colors",
     "lint": "eslint --color source/javascripts/",
