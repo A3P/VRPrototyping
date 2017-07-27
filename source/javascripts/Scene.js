@@ -42,6 +42,14 @@ globalScene.add(light);
 let animationDisplay;
 const ChessGame = new Chess(globalScene);
 
+document.getElementById('create-game').onclick = function() {
+  ChessGame.api.createGame()
+  .then(JSON.parse)
+  .then((resp) => {
+    ChessGame.play(resp);
+  });
+};
+
 const animate = () => {
   stats.begin();
   if (webvr.enterVR.isPresenting()) {
