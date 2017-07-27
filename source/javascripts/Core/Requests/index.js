@@ -1,4 +1,4 @@
-export default (method, url) =>
+export default (method, url, payload = null) =>
   new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open(method, url);
@@ -18,5 +18,5 @@ export default (method, url) =>
         statusText: xhr.statusText
       });
     };
-    xhr.send();
+    xhr.send(payload);
   });
