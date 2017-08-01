@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import Stats from './Stats.js';
 import Chess from './Chess/Chess';
 import WebVr from './WebVR/WebVR';
-import { checkForStats, getUSID } from './SendStats';
 
 const globalScene = new THREE.Scene();
 
@@ -24,7 +23,6 @@ effect.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 const stats = new Stats();
-const usid = getUSID();
 
 stats.domElement.style.position = 'absolute';
 stats.domElement.style.left = '0px';
@@ -61,7 +59,7 @@ const animate = () => {
   }
   ChessGame.boardcontroller.animateMovement();
   animationDisplay.requestAnimationFrame(animate);
-  checkForStats(stats.end(), renderer.info, usid);
+  stats.end();
 };
 
 const showGames = () => {
