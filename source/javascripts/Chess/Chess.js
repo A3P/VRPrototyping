@@ -13,7 +13,9 @@ class Chess {
     this.api = new ChessAPI();
     this.pieceSet = null;
     this.board = null;
+    this.gameID = null;
     this.boardcontroller = new BoardController();
+    this.setBoard = false;
   }
 
   /**
@@ -66,15 +68,22 @@ class Chess {
 
   play(gameID = null) {
     if (gameID) {
+      this.gameID = gameID;
       this.api = new ChessAPI(`${CHESS_SOCKET_API_URL}${gameID}`);
     }
     console.log('Playing!');
+    this.boardSet = true;
     this.api.setListenerForMessages(this.messageHandler.bind(this));
   }
 
   messageHandler(msg) {
     const data = JSON.parse(msg.data);
-    this.boardcontroller.placePieces(data.board_state);
+    if (this.boardSet) {
+      this.boardcontroller.placePieces(data.board_state);
+      this.boardSet = false;
+    } else {
+      this.boardcontroller.movePiece(data.moves);
+    }
   }
 }
 
