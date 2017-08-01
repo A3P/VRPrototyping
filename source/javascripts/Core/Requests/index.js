@@ -14,7 +14,7 @@ export default (method, url, payload = null) =>
     };
     xhr.onerror = () => {
       reject({
-        status: this.status,
+        status: xhr.status,
         statusText: xhr.statusText
       });
     };
