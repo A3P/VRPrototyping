@@ -121,6 +121,14 @@ class BoardController {
     return this.boardPlacements[coordinates[0]][coordinates[1]];
   }
 
+  getPieces() {
+    return this.boardPlacements;
+  }
+
+  getBoard() {
+    return this.board;
+  }
+
   animateMovement() {
     if (this.animationQueue.length !== 0) {
       const move = this.animationQueue[0];
