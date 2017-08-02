@@ -95,35 +95,39 @@ class BoardController {
   */
   movePiece(moves) {
     moves.forEach((move) => {
-      const animation = {};
+      if (this.getPiece(move.source)) {
+        const animation = {};
 
-      animation.destination = this.calculatePosition(
-          move.destination[0],
-          move.destination[1]
-      );
-
-      animation.source = this.calculatePosition(
-        move.source[0],
-        move.source[1]
-      );
-
-      this.board.removePiece(
-        this.getPiece(move.destination)
-      );
-
-      this.boardPlacements[move.destination[0]][move.destination[1]] =
-        this.getPiece(move.source);
-
-      this.boardPlacements[move.source[0]][move.source[1]] = undefined;
-      animation.piece = this.getPiece(move.destination);
-
-      if (move.captured.length === 2) {
-        this.board.removePiece(
-          this.getPiece(move.captured)
+        animation.destination = this.calculatePosition(
+            move.destination[0],
+            move.destination[1]
         );
-      }
 
-      this.animationQueue.push(animation);
+        animation.source = this.calculatePosition(
+          move.source[0],
+          move.source[1]
+        );
+
+        this.board.removePiece(
+          this.getPiece(move.destination)
+        );
+
+        this.boardPlacements[move.destination[0]][move.destination[1]] =
+          this.getPiece(move.source);
+
+        this.boardPlacements[move.source[0]][move.source[1]] = undefined;
+        animation.piece = this.getPiece(move.destination);
+
+        if (move.captured.length === 2) {
+          this.board.removePiece(
+            this.getPiece(move.captured)
+          );
+        }
+
+        if (animation.piece !== undefined) {
+          this.animationQueue.push(animation);
+        }
+      }
     });
   }
 
@@ -142,7 +146,6 @@ class BoardController {
   animateMovement() {
     if (this.animationQueue.length !== 0) {
       const move = this.animationQueue[0];
-
       if (this.animationProgress < 1.0) {
         move.piece.position.lerpVectors(
           move.source,
