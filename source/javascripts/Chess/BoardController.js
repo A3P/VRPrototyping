@@ -57,6 +57,9 @@ class BoardController {
   placePieces(boardState) {
     // Board is cleared and all the pieces are added to the board anew
     this.board.clearBoard();
+    this.animationQueue = [];
+    this.boardPlacements = [[], [], [], [], [], [], [], []];
+    this.animationProgress = 0.0;
 
     for (let i = 0; i < boardState.length; i++) {
       if (boardState[i].piece !== '') {
@@ -84,36 +87,47 @@ class BoardController {
     Format for moves:
     ******************
     const moves = [
-      [{source: [0, 1], destination: [0, 2]}],
-      [{source: [1, 1], destination: [1, 3]}],
-      [{source: [1, 0], destination: [2, 2]}],
-      [{source: [1, 7], destination: [2, 5]}],
+      {source: [0, 1], destination: [0, 2]},
+      {source: [1, 1], destination: [1, 3]},
+      {source: [1, 0], destination: [2, 2]},
+      {source: [1, 7], destination: [2, 5]},
     ]
   */
   movePiece(moves) {
     moves.forEach((move) => {
-      const animation = {};
+      if (this.getPiece(move.source)) {
+        const animation = {};
 
-      animation.destination = this.calculatePosition(
-          move.destination[0],
-          move.destination[1]
-      );
+        animation.destination = this.calculatePosition(
+            move.destination[0],
+            move.destination[1]
+        );
 
-      animation.source = this.calculatePosition(
-        move.source[0],
-        move.source[1]
-      );
+        animation.source = this.calculatePosition(
+          move.source[0],
+          move.source[1]
+        );
 
-      this.board.removePiece(
-        this.getPiece(move.destination)
-      );
+        this.board.removePiece(
+          this.getPiece(move.destination)
+        );
 
-      this.boardPlacements[move.destination[0]][move.destination[1]] =
-        this.getPiece(move.source);
+        this.boardPlacements[move.destination[0]][move.destination[1]] =
+          this.getPiece(move.source);
 
-      this.boardPlacements[move.source[0]][move.source[1]] = undefined;
-      animation.piece = this.getPiece(move.destination);
-      this.animationQueue.push(animation);
+        this.boardPlacements[move.source[0]][move.source[1]] = undefined;
+        animation.piece = this.getPiece(move.destination);
+
+        if (move.captured.length === 2) {
+          this.board.removePiece(
+            this.getPiece(move.captured)
+          );
+        }
+
+        if (animation.piece !== undefined) {
+          this.animationQueue.push(animation);
+        }
+      }
     });
   }
 
@@ -121,10 +135,17 @@ class BoardController {
     return this.boardPlacements[coordinates[0]][coordinates[1]];
   }
 
+  getPieces() {
+    return this.boardPlacements;
+  }
+
+  getBoard() {
+    return this.board;
+  }
+
   animateMovement() {
     if (this.animationQueue.length !== 0) {
       const move = this.animationQueue[0];
-
       if (this.animationProgress < 1.0) {
         move.piece.position.lerpVectors(
           move.source,
