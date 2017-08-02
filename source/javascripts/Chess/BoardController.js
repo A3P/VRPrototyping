@@ -116,6 +116,13 @@ class BoardController {
 
       this.boardPlacements[move.source[0]][move.source[1]] = undefined;
       animation.piece = this.getPiece(move.destination);
+
+      if (move.captured.length === 2) {
+        this.board.removePiece(
+          this.getPiece(move.captured)
+        );
+      }
+
       this.animationQueue.push(animation);
     });
   }
