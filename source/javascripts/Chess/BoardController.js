@@ -87,10 +87,10 @@ class BoardController {
     Format for moves:
     ******************
     const moves = [
-      [{source: [0, 1], destination: [0, 2]}],
-      [{source: [1, 1], destination: [1, 3]}],
-      [{source: [1, 0], destination: [2, 2]}],
-      [{source: [1, 7], destination: [2, 5]}],
+      {source: [0, 1], destination: [0, 2]},
+      {source: [1, 1], destination: [1, 3]},
+      {source: [1, 0], destination: [2, 2]},
+      {source: [1, 7], destination: [2, 5]},
     ]
   */
   movePiece(moves) {
