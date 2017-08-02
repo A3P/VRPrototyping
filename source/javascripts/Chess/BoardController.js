@@ -57,6 +57,9 @@ class BoardController {
   placePieces(boardState) {
     // Board is cleared and all the pieces are added to the board anew
     this.board.clearBoard();
+    this.animationQueue = [];
+    this.boardPlacements = [[], [], [], [], [], [], [], []];
+    this.animationProgress = 0.0;
 
     for (let i = 0; i < boardState.length; i++) {
       if (boardState[i].piece !== '') {
