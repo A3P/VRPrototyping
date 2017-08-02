@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import Stats from './Stats.js';
 import Chess from './Chess/Chess';
 import WebVr from './WebVR/WebVR';
+import PieceControls from './Chess/PieceControls';
 
 const globalScene = new THREE.Scene();
 
@@ -39,6 +40,7 @@ globalScene.add(light);
 
 let animationDisplay;
 const ChessGame = new Chess(globalScene);
+let pieceControls;
 
 document.getElementById('create-game').onclick = function() {
   ChessGame.api.createGame()
@@ -81,6 +83,7 @@ const showGames = () => {
     for (let i = 0; i < radios.length; i++) {
       radios[i].onclick = function() {
         ChessGame.play(this.value);
+        pieceControls.setGameID(this.value);
       };
     }
   }).catch((err) => {
@@ -91,6 +94,7 @@ const showGames = () => {
 ChessGame.initGenericBlender().then((values) => {
   ChessGame.init(values);
   ChessGame.play();
+  pieceControls = new PieceControls(renderer, ChessGame.boardcontroller, camera);
   showGames();
   // Get the HMD
   webvr.enterVR.getVRDisplay().then((display) => {
