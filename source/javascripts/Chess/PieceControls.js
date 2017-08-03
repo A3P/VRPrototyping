@@ -12,6 +12,8 @@ class PieceControls {
     this.pieceSelected = true;
     this.sourceCoordinates = [];
     this.gameID = gameID;
+    this.squareHighlight = this.createSquareHighlight();
+
     document.addEventListener('mousedown', this.onDocumentMouseDown.bind(this), false);
   }
 
@@ -62,8 +64,43 @@ class PieceControls {
     });
   }
 
-  setPieceSelected(booleanValue) {
-    this.pieceSelected = booleanValue;
+  setPieceSelected(isSelected) {
+    this.pieceSelected = isSelected;
+    if (isSelected) {
+      this.activateSquareHighlight();
+    } else {
+      this.deactivateSquareHighlight()
+    }
+  }
+
+  createSquareHighlight() {
+    const square = new THREE.Mesh(
+      new THREE.PlaneGeometry(4, 4),
+      new THREE.MeshBasicMaterial(
+        {
+          color: 0xff5f5f,
+          side: THREE.DoubleSide
+        }
+      )
+    );
+
+    square.rotateX(1.57);
+    return square;
+  }
+
+  activateSquareHighlight() {
+    this.squareHighlight.position.copy(
+      this.boardController.calculatePosition(
+        this.sourceCoordinates[0],
+        this.sourceCoordinates[1]
+      )
+    );
+    this.squareHighlight.position.y += 0.005;
+    this.boardController.getBoard().mesh.add(this.squareHighlight);
+  }
+
+  deactivateSquareHighlight() {
+    this.boardController.getBoard().mesh.remove(this.squareHighlight);
   }
 
   getSquare(point) {
