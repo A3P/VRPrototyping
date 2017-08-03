@@ -40,14 +40,14 @@ class PieceControls {
 
       if (this.pieceSelected) {
         this.sendMove(this.sourceCoordinates, coordinates);
-        this.pieceSelected = !this.pieceSelected;
+        this.setPieceSelected(!this.pieceSelected);
       } else {
         this.sourceCoordinates = coordinates;
-        this.pieceSelected = !this.pieceSelected;
+        this.setPieceSelected(!this.pieceSelected);
       }
 
     } else {
-      this.pieceSelected = false;
+      this.setPieceSelected(false);
     }
   }
 
@@ -60,6 +60,10 @@ class PieceControls {
     return objects.filter((element) => {
       return element !== undefined;
     });
+  }
+
+  setPieceSelected(booleanValue) {
+    this.pieceSelected = booleanValue;
   }
 
   getSquare(point) {
