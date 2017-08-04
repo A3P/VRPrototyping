@@ -20,20 +20,14 @@ class PieceControls {
   onDocumentMouseDown(event) {
     event.preventDefault();
 
-    let objects = [];
-
-    if (this.pieceSelected) {
-      objects.push(this.boardController.getBoard().mesh);
-    } else {
-      objects = this.getPieces();
-    }
+    const raycastObjects = this.getRaycastObjects();
 
     this.mouse.x = (event.clientX / this.renderer.domElement.clientWidth) * 2 - 1;
     this.mouse.y = -(event.clientY / this.renderer.domElement.clientHeight) * 2 + 1;
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
-    const intersects = this.raycaster.intersectObjects(objects);
+    const intersects = this.raycaster.intersectObjects(raycastObjects);
     let clicked;
 
     if (intersects.length > 0) {
@@ -50,6 +44,14 @@ class PieceControls {
 
     } else {
       this.setPieceSelected(false);
+    }
+  }
+
+  getRaycastObjects() {
+    if (this.pieceSelected) {
+      return [this.boardController.getBoard().mesh];
+    } else {
+      return this.getPieces();
     }
   }
 
