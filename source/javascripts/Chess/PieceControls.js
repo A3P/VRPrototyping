@@ -21,13 +21,7 @@ class PieceControls {
     event.preventDefault();
 
     const raycastObjects = this.getRaycastObjects();
-
-    this.mouse.x = (event.clientX / this.renderer.domElement.clientWidth) * 2 - 1;
-    this.mouse.y = -(event.clientY / this.renderer.domElement.clientHeight) * 2 + 1;
-
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-
-    const intersects = this.raycaster.intersectObjects(raycastObjects);
+    const intersects = this.raycast(event, raycastObjects);
     let clicked;
 
     if (intersects.length > 0) {
@@ -53,6 +47,14 @@ class PieceControls {
     } else {
       return this.getPieces();
     }
+  }
+
+  raycast(mouseEvent, raycastObjects) {
+    this.mouse.x = (mouseEvent.clientX / this.renderer.domElement.clientWidth) * 2 - 1;
+    this.mouse.y = -(mouseEvent.clientY / this.renderer.domElement.clientHeight) * 2 + 1;
+
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    return this.raycaster.intersectObjects(raycastObjects);
   }
 
   getPieces() {
