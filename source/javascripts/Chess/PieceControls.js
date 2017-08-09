@@ -13,6 +13,7 @@ class PieceControls {
     this.sourceCoordinates = [];
     this.gameID = gameID;
     this.sourceSquareHighlight = this.createSquareHighlight();
+    this.destinationSquareHighlight = this.createSquareHighlight();
 
     document.addEventListener('mousedown', this.onDocumentMouseDown.bind(this), false);
   }
