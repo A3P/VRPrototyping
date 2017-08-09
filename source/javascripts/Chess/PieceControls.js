@@ -12,7 +12,7 @@ class PieceControls {
     this.pieceSelected = true;
     this.sourceCoordinates = [];
     this.gameID = gameID;
-    this.squareHighlight = this.createSquareHighlight();
+    this.sourceSquareHighlight = this.createSquareHighlight();
 
     document.addEventListener('mousedown', this.onDocumentMouseDown.bind(this), false);
   }
@@ -93,18 +93,18 @@ class PieceControls {
   }
 
   activateSquareHighlight() {
-    this.squareHighlight.position.copy(
+    this.sourceSquareHighlight.position.copy(
       this.boardController.calculatePosition(
         this.sourceCoordinates[0],
         this.sourceCoordinates[1]
       )
     );
-    this.squareHighlight.position.y += 0.005;
-    this.boardController.getBoard().mesh.add(this.squareHighlight);
+    this.sourceSquareHighlight.position.y += 0.005;
+    this.boardController.getBoard().mesh.add(this.sourceSquareHighlight);
   }
 
   deactivateSquareHighlight() {
-    this.boardController.getBoard().mesh.remove(this.squareHighlight);
+    this.boardController.getBoard().mesh.remove(this.sourceSquareHighlight);
   }
 
   getSquare(point) {
