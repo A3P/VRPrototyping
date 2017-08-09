@@ -122,6 +122,7 @@ class BoardController {
           this.board.removePiece(
             this.getPiece(move.captured)
           );
+          this.boardPlacements[move.captured[0]][move.captured[1]] = undefined;
         }
 
         if (animation.piece !== undefined) {
