@@ -82,7 +82,7 @@ class Chess {
       this.boardcontroller.placePieces(data.board_state);
       this.boardSet = false;
     } else {
-      this.boardcontroller.movePiece(data.moves);
+      this.boardcontroller.movePiece(data);
     }
   }
 }
