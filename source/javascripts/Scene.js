@@ -53,7 +53,6 @@ document.getElementById('create-game').onclick = function() {
 const animate = () => {
   stats.begin();
   if (webvr.enterVR.isPresenting()) {
-    webvr.getControls().update();
     renderer.render(globalScene, camera);
     effect.render(globalScene, camera);
   } else {
