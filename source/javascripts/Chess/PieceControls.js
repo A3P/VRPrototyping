@@ -10,11 +10,14 @@ class PieceControls {
     this.camera = camera;
     this.boardController = boardController;
     this.pieceSelected = true;
+    this.mouseMoved = false;
     this.sourceCoordinates = [];
+    this.destinationCoordinates = [];
     this.gameID = gameID;
     this.sourceSquareHighlight = this.createSquareHighlight();
     this.destinationSquareHighlight = this.createSquareHighlight();
 
+    document.addEventListener('mouseup', this.onDocumentMouseUp.bind(this), false);
     document.addEventListener('mousedown', this.onDocumentMouseDown.bind(this), false);
   }
 
@@ -35,11 +38,36 @@ class PieceControls {
       } else {
         this.sourceCoordinates = coordinates;
         this.setPieceSelected(!this.pieceSelected);
+        document.addEventListener('mousemove', this.onDocumentMouseMove.bind(this), false);
       }
 
     } else {
       this.setPieceSelected(false);
     }
+  }
+
+  onDocumentMouseMove(event) {
+    if (this.pieceSelected && event.buttons === 1) {
+      this.mouseMoved = true;
+      const board = [this.boardController.getBoard().mesh];
+      const intersects = this.raycast(event, board);
+
+      if (intersects.length > 0) {
+        this.destinationCoordinates = this.getSquare(intersects[0].point);
+        const move = [{ source: this.sourceCoordinates, destination: this.destinationCoordinates }];
+        this.boardController.previewMoves(move);
+      }
+
+    }
+  }
+
+  onDocumentMouseUp() {
+    document.removeEventListener('mousemove', this.onDocumentMouseMove.bind(this), false);
+    this.boardController.placePieces(this.boardController.boardState);
+    if (this.mouseMoved) {
+      this.sendMove(this.sourceCoordinates, this.destinationCoordinates);
+    }
+    this.mouseMoved = false;
   }
 
   getRaycastObjects() {
