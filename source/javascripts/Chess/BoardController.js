@@ -60,6 +60,7 @@ class BoardController {
     this.animationQueue = [];
     this.boardPlacements = [[], [], [], [], [], [], [], []];
     this.animationProgress = 0.0;
+    this.boardState = boardState;
 
     for (let i = 0; i < boardState.length; i++) {
       if (boardState[i].piece !== '') {
@@ -93,8 +94,9 @@ class BoardController {
       {source: [1, 7], destination: [2, 5]},
     ]
   */
-  movePiece(moves) {
-    moves.forEach((move) => {
+  movePiece(data) {
+    this.boardState = data.board_state;
+    data.moves.forEach((move) => {
       if (this.getPiece(move.source)) {
         const animation = {};
 
