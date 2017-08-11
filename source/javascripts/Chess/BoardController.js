@@ -134,6 +134,22 @@ class BoardController {
     });
   }
 
+  previewMoves(moves) {
+    moves.forEach((move) => {
+      if (this.getPiece(move.source)) {
+
+        const piece = this.getPiece(move.source);
+
+        piece.position.copy(
+          this.calculatePosition(
+            move.destination[0],
+            move.destination[1]
+          )
+        );
+      }
+    });
+  }
+
   getPiece(coordinates) {
     return this.boardPlacements[coordinates[0]][coordinates[1]];
   }
